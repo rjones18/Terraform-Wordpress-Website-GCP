@@ -8,7 +8,7 @@ For storing user posts, I provisioned a MySQL database instance on GCP's MySQL D
 
 The application is broken down into the architecture below:
 
-![wordpress](https://github.com/rjones18/Images/blob/main/Cloud%20architecture%20with%20costs%20example%20-%20Current.png)
+![wordpress](https://github.com/rjones18/Images/blob/main/Cloud%20architecture%20with%20costs%20example%20-%20Current%20(2).png)
 
 
 
