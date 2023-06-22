@@ -2,8 +2,9 @@ resource "google_compute_instance_template" "instance_template" {
   name         = "instance-template"
   machine_type = "e2-medium"
   tags = ["http-server"]
+
   disk {
-    source_image = "projects/alert-flames-286515/global/images/wordpress-image-1681867159"
+    source_image = "projects/alert-flames-286515/global/images/wordpress-image-1687454025"
     auto_delete  = true
     boot         = true
   }
@@ -19,14 +20,19 @@ resource "google_compute_instance_template" "instance_template" {
   }
 }
 
-resource "google_compute_instance_group_manager" "instance_group" {
+resource "google_compute_region_instance_group_manager" "instance_group" {
   name               = "managed-instance-group"
-  zone               = "us-central1-a"
+  region             = "us-central1"
   base_instance_name = "managed-instance"
 
   target_pools = [google_compute_target_pool.target_pool.self_link]
 
   target_size = 2
+
+  distribution_policy_zones = [
+    "us-central1-a",
+    "us-central1-b"
+  ]
 
   named_port {
     name = "http"
@@ -38,11 +44,10 @@ resource "google_compute_instance_group_manager" "instance_group" {
   }
 }
 
-resource "google_compute_autoscaler" "autoscaler" {
-  name = "autoscaler"
-  zone = "us-central1-a"
-
-  target = google_compute_instance_group_manager.instance_group.self_link
+resource "google_compute_region_autoscaler" "autoscaler" {
+  name   = "autoscaler"
+  region = "us-central1"
+  target = google_compute_region_instance_group_manager.instance_group.self_link
 
   autoscaling_policy {
     max_replicas    = 5
@@ -55,15 +60,17 @@ resource "google_compute_autoscaler" "autoscaler" {
   }
 }
 
+
 resource "google_compute_target_pool" "target_pool" {
-  name = "target-pool"
+  name          = "target-pool"
+  region        = "us-central1"
   health_checks = [google_compute_http_health_check.http_health_check.self_link]
 }
 
 resource "google_compute_forwarding_rule" "http_forwarding_rule" {
-  name        = "http-forwarding-rule"
-  target      = google_compute_target_pool.target_pool.self_link
-  port_range  = "80"
+  name       = "http-forwarding-rule"
+  target     = google_compute_target_pool.target_pool.self_link
+  port_range = "80"
   ip_protocol = "TCP"
   ip_address  = google_compute_address.regional_ip.address
 }
@@ -72,6 +79,8 @@ resource "google_compute_address" "regional_ip" {
   name   = "regional-ip"
   region = "us-central1"
 }
+
+
 
 resource "google_compute_http_health_check" "http_health_check" {
   name               = "http-health-check"
