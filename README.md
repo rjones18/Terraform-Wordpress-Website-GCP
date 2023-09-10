@@ -1,17 +1,17 @@
 # Terraform-Wordpress-Website-GCP
 
-In this project, I employed a diverse range of technologies to develop a WordPress blog website hosted on Google Cloud Platform (GCP). To optimize the deployment process, I established a Continuous Deployment (CD) strategy by seamlessly integrating the GitHub repository with Google Cloud Source Repositories and Snyk for vulnerability monitoring. To automate infrastructure setup, I leveraged Cloud Build to orchestrate the deployment of Terraform code for each infrastructure component. Furthermore, I used Packer to generate a custom Amazon Machine Image (AMI) with pre-installed packages, utilizing Ansible playbooks. The AMI also has the Cloud Monitoring and Logging Agents for monitoring and alerting.
+In this project, I developed a WordPress blog website on Google Cloud Platform (GCP), harnessing a robust Continuous Deployment (CD) strategy. I integrated the GitHub repository with Google Cloud Source Repositories and incorporated Snyk for Infrastructure as Code (IaC) vulnerability scanning. Using Cloud Build, I orchestrated automated deployments of Terraform code, and with Packer, generated a custom Amazon Machine Image (AMI) configured through Ansible playbooks. This AMI included Cloud Monitoring, Logging Agents, and the OS Configuration Agent for comprehensive VM management.
 
-For storing user posts, I provisioned a MySQL database instance on GCP's MySQL Database service. I also integrated Google Domains to assign a custom domain name to the website. All these components were orchestrated and deployed using Cloud Build, a renowned continuous integration and delivery platform. By harnessing this technology stack, I successfully automated and streamlined the entire deployment process, culminating in a scalable and secure WordPress website hosted on GCP.
+I provisioned a MySQL instance on GCP's Cloud SQL for data storage and assigned a custom domain via Google Domains. The entire deployment process was streamlined and automated using Google's Cloud Build, resulting in a secure and scalable WordPress website on GCP.
 
 ## Application Breakdown
 
 The application is broken down into the architecture below:
 
-![wordpress](https://github.com/rjones18/Images/blob/main/Cloud%20architecture%20with%20costs%20example%20-%20Current%20(2).png)
+![wordpress](https://github.com/rjones18/Images/blob/main/GCP%20Wordpress%20-%20Current.png)
 
 
 
 Links to the AMI-Build Repo for this Project:
 
-- [Packer AMI Build](https://github.com/rjones18/GCP-Wordpress-AMI-Build)
+- [Packer AMI Build](https://github.com/rjones18/GCP-Wordpress-Image-Build) (Being Updated to use Secrets and to setup Pipeline In Cloudbuild)
