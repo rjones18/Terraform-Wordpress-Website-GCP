@@ -12,41 +12,54 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 steps:
 - id: 'branch name'
   name: 'alpine'
-  entrypoint: 'sh'  
-  args: 
+  entrypoint: 'sh'
+  args:
   - '-c'
-  - | 
+  - |
       echo "***********************"
       echo "$BRANCH_NAME"
       echo "***********************"
+
+- id: 'snyk scan'
+  name: 'node:14'
+  entrypoint: 'sh'
+  secretEnv: ['SNYK_TOKEN']
+  args:
+  - '-c'
+  - |
+      npm install -g snyk && 
+      snyk auth $$SNYK_TOKEN &&
+      snyk iac test . || true
+
 - id: 'tf init'
   name: 'hashicorp/terraform:1.0.0'
   entrypoint: 'sh'
-  args: 
+  args:
   - '-c'
   - terraform init
 
-# [START tf-plan]
 - id: 'tf plan'
   name: 'hashicorp/terraform:1.0.0'
   entrypoint: 'sh'
-  args: 
+  args:
   - '-c'
   - terraform plan
 
-
-# [START tf-apply]
 - id: 'tf apply'
   name: 'hashicorp/terraform:1.0.0'
   entrypoint: 'sh'
-  args: 
+  args:
   - '-c'
   - terraform apply -auto-approve
-  
+
 options:
-  logging : CLOUD_LOGGING_ONLY
+  logging: CLOUD_LOGGING_ONLY
 timeout: 1600s
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/alert-flames-286515/secrets/snyk-key/versions/1
+    env: 'SNYK_TOKEN'
