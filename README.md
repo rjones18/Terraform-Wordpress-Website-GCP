@@ -20,4 +20,4 @@ Link to the 3 repos with Cloudbuild:
 
 Links to the AMI-Build Repo for this Project:
 
-- [Packer AMI Build](https://github.com/rjones18/GCP-Wordpress-Image-Build) (Being Updated to use Secrets and to setup Pipeline In Cloudbuild)
+- [Packer Machine Image Build](https://github.com/rjones18/GCP-Wordpress-Image-Build) (Being Updated to use Secrets and to setup Pipeline In Cloudbuild)
